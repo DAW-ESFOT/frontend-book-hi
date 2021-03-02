@@ -1,139 +1,81 @@
-.spinner {
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    top: 50%;
-    left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-}
-.spinner .blob {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    border: 2px solid #001529;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-}
-.spinner .blob.top {
-    top: 0;
-    -webkit-animation: blob-top 1s infinite ease-in;
-    animation: blob-top 1s infinite ease-in;
-}
-.spinner .blob.bottom {
-    top: 100%;
-    -webkit-animation: blob-bottom 1s infinite ease-in;
-    animation: blob-bottom 1s infinite ease-in;
-}
-.spinner .blob.left {
-    left: 0;
-    -webkit-animation: blob-left 1s infinite ease-in;
-    animation: blob-left 1s infinite ease-in;
-}
-.spinner .moveBlob {
-    background: #001529;
-    top: 0;
-    -webkit-animation: blob-spinner-mover 1s infinite ease-in;
-    animation: blob-spinner-mover 1s infinite ease-in;
+.skCubeGrid {
+    width: 40px;
+    height: 40px;
+    margin: 100px auto;
 }
 
-@-webkit-keyframes blob-bottom {
-    25%, 50%, 75% {
-        top: 50%;
-        left: 100%;
+.skCubeGrid .skCube {
+    width: 33%;
+    height: 33%;
+    background-color: #44857D;
+    float: left;
+    -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+    animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+}
+
+.skCubeGrid .skCube1 {
+    -webkit-animation-delay: 0.2s;
+    animation-delay: 0.2s;
+}
+
+.skCubeGrid .skCube2 {
+    -webkit-animation-delay: 0.3s;
+    animation-delay: 0.3s;
+}
+
+.skCubeGrid .skCube3 {
+    -webkit-animation-delay: 0.4s;
+    animation-delay: 0.4s;
+}
+
+.skCubeGrid .skCube4 {
+    -webkit-animation-delay: 0.1s;
+    animation-delay: 0.1s;
+}
+
+.skCubeGrid .skCube5 {
+    -webkit-animation-delay: 0.2s;
+    animation-delay: 0.2s;
+}
+
+.skCubeGrid .skCube6 {
+    -webkit-animation-delay: 0.3s;
+    animation-delay: 0.3s;
+}
+
+.skCubeGrid .skCube7 {
+    -webkit-animation-delay: 0s;
+    animation-delay: 0s;
+}
+
+.skCubeGrid .skCube8 {
+    -webkit-animation-delay: 0.1s;
+    animation-delay: 0.1s;
+}
+
+.skCubeGrid .skCube9 {
+    -webkit-animation-delay: 0.2s;
+    animation-delay: 0.2s;
+}
+
+@-webkit-keyframes sk-cubeGridScaleDelay {
+    0%, 70%, 100% {
+        -webkit-transform: scale3D(1, 1, 1);
+        transform: scale3D(1, 1, 1);
     }
-    100% {
-        top: 0;
-        left: 50%;
+    35% {
+        -webkit-transform: scale3D(0, 0, 1);
+        transform: scale3D(0, 0, 1);
     }
 }
 
-@keyframes blob-bottom {
-    25%, 50%, 75% {
-        top: 50%;
-        left: 100%;
+@keyframes sk-cubeGridScaleDelay {
+    0%, 70%, 100% {
+        -webkit-transform: scale3D(1, 1, 1);
+        transform: scale3D(1, 1, 1);
     }
-    100% {
-        top: 0;
-        left: 50%;
-    }
-}
-@-webkit-keyframes blob-left {
-    25% {
-        top: 50%;
-        left: 0;
-    }
-    50%, 100% {
-        top: 100%;
-        left: 50%;
-    }
-}
-@keyframes blob-left {
-    25% {
-        top: 50%;
-        left: 0;
-    }
-    50%, 100% {
-        top: 100%;
-        left: 50%;
-    }
-}
-@-webkit-keyframes blob-top {
-    50% {
-        top: 0;
-        left: 50%;
-    }
-    75%, 100% {
-        top: 50%;
-        left: 0;
-    }
-}
-@keyframes blob-top {
-    50% {
-        top: 0;
-        left: 50%;
-    }
-    75%, 100% {
-        top: 50%;
-        left: 0;
-    }
-}
-@-webkit-keyframes blob-spinner-mover {
-    0%, 100% {
-        top: 0;
-        left: 50%;
-    }
-    25% {
-        top: 50%;
-        left: 100%;
-    }
-    50% {
-        top: 100%;
-        left: 50%;
-    }
-    75% {
-        top: 50%;
-        left: 0;
-    }
-}
-@keyframes blob-spinner-mover {
-    0%, 100% {
-        top: 0;
-        left: 50%;
-    }
-    25% {
-        top: 50%;
-        left: 100%;
-    }
-    50% {
-        top: 100%;
-        left: 50%;
-    }
-    75% {
-        top: 50%;
-        left: 0;
+    35% {
+        -webkit-transform: scale3D(0, 0, 1);
+        transform: scale3D(0, 0, 1);
     }
 }
