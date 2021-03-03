@@ -1,14 +1,14 @@
 const publicRoutes = {
-  LOGIN: "/login",
-  REGISTER: "/registro",
+    LOGIN: "/login",
+    REGISTER: "/registro",
 };
 
 const privateRoutes = {
-  HOME: "/",
+    HOME: "/",
 };
 
 const Routes = {
-  ...publicRoutes,
-  ...privateRoutes,
+    ...publicRoutes,
+    ...privateRoutes,
 };
 export default Routes;
