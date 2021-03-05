@@ -13,18 +13,27 @@ import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Divider from "@material-ui/core/Divider";
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import clsx from 'clsx';
 import {yupResolver} from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
+
 const schema = yup.object().shape({
-    firstName: yup.string().required("Ingrese su nombre"),
-    lastName: yup.string().required("Ingrese su apellido"),
+    name: yup.string().required("Ingrese su nombre"),
+    last_name: yup.string().required("Ingrese su apellido"),
     email: yup
         .string()
         .email("Ingrese un email válido")
         .required("Ingrese su email."),
     password: yup.string().required("Ingrese su contraseña"),
-    confirmPassword: yup.string().required("Confirme su contraseña"),
+    password_confirmation: yup.string().required("Confirme su contraseña"),
 });
 
 const useStyles = makeStyles((theme) => ({
@@ -45,6 +54,16 @@ const useStyles = makeStyles((theme) => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
+    root: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+    withoutLabel: {
+        marginTop: theme.spacing(3),
+    },
+    textField: {
+        width: "-webkit-fill-available",
+    },
 }));
 
 
@@ -54,11 +73,19 @@ const Register = () => {
     const {register, handleSubmit, errors} = useForm({
         resolver: yupResolver(schema),
     });
+    const [image, setImage] = React.useState(null);
+    const [values, setValues] = React.useState({
+        amount: '',
+        password: '',
+        weight: '',
+        weightRange: '',
+        showPassword: false,
+    });
 
     const onSubmit = async (data) => {
         console.log("data", data);
         try {
-            const userData = await doRegister({...data, role: "ROLE_USER"});
+            const userData = await doRegister({...data, role: "ROLE_USER", image: image});
 
             console.log("userData", userData);
         } catch (error) {
@@ -79,6 +106,24 @@ const Register = () => {
             console.log(error.config);
         }
     };
+
+    const handleImage = (image) => {
+        setImage(image);
+    };
+
+
+    const handleChange = (prop) => (event) => {
+        setValues({...values, [prop]: event.target.value});
+    };
+
+    const handleClickShowPassword = () => {
+        setValues({...values, showPassword: !values.showPassword});
+    };
+
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
+
     return (
 
         <Container component="main" maxWidth="xs" className={styles.container}>
@@ -99,7 +144,7 @@ const Register = () => {
                 </Grid>
                 <Grid style={{paddingTop: "30px"}}>
                     <Typography component="h1" variant="h5">
-                        Iniciar Sesión
+                        Registro
                     </Typography>
                 </Grid>
                 <form className={classes.form} noValidate onSubmit={handleSubmit(onSubmit)}>
@@ -107,29 +152,55 @@ const Register = () => {
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 autoComplete="fname"
-                                name="firstName"
+                                name="name"
                                 variant="outlined"
                                 required
                                 fullWidth
-                                id="firstName"
+                                id="name"
                                 inputRef={register}
                                 label="Nombre"
                                 autoFocus
                             />
-                            <Typography color="primary">{errors.firstName?.message}</Typography>
+                            <Typography color="primary">{errors.name?.message}</Typography>
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 variant="outlined"
                                 required
                                 fullWidth
-                                id="lastName"
+                                id="last_name"
                                 inputRef={register}
                                 label="Apellido"
-                                name="lastName"
+                                name="last_name"
                                 autoComplete="lname"
                             />
-                            <Typography color="primary">{errors.lastName?.message}</Typography>
+                            <Typography color="primary">{errors.last_name?.message}</Typography>
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                variant="outlined"
+                                required
+                                fullWidth
+                                id="nickname"
+                                inputRef={register}
+                                label="Apodo"
+                                name="nickname"
+                                autoComplete="lname"
+                            />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <Button
+                                component="label"
+                            >
+                                Seleccionar Imagen
+                                <input
+                                    type="file"
+                                    name="image"
+                                    id="image"
+                                    onChange={(e) => handleImage(e.target.files)}
+                                    hidden
+                                />
+                            </Button>
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
@@ -145,32 +216,58 @@ const Register = () => {
                             <Typography color="primary">{errors.email?.message}</Typography>
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                name="password"
-                                label="Contraseña"
-                                type="password"
-                                id="password"
-                                inputRef={register}
-                                autoComplete="current-password"
-                            />
+                            <FormControl className={clsx(classes.textField)} variant="outlined">
+                                <InputLabel htmlFor="password">Contraseña *</InputLabel>
+                                <OutlinedInput
+                                    id="password"
+                                    name="password"
+                                    inputRef={register}
+                                    type={values.showPassword ? 'text' : 'password'}
+                                    value={values.password}
+                                    onChange={handleChange('password')}
+                                    endAdornment={
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword}
+                                                edge="end"
+                                            >
+                                                {values.showPassword ? <Visibility/> : <VisibilityOff/>}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    }
+                                    labelWidth={93}
+                                />
+                            </FormControl>
                             <Typography color="primary">{errors.password?.message}</Typography>
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                name="confirmPassword"
-                                label="Confirmar Contraseña"
-                                type="password"
-                                id="confirmPassword"
-                                inputRef={register}
-                                autoComplete="current-password"
-                            />
-                            <Typography color="primary">{errors.confirmPassword?.message}</Typography>
+                            <FormControl className={clsx(classes.textField)} variant="outlined">
+                                <InputLabel htmlFor="password_confirmation">Confirmar Contraseña *</InputLabel>
+                                <OutlinedInput
+                                    id="password_confirmation"
+                                    name="password_confirmation"
+                                    inputRef={register}
+                                    type={values.showPassword ? 'text' : 'password'}
+                                    value={values.password_confirmation}
+                                    onChange={handleChange('password_confirmation')}
+                                    endAdornment={
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword}
+                                                edge="end"
+                                            >
+                                                {values.showPassword ? <Visibility/> : <VisibilityOff/>}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    }
+                                    labelWidth={175}
+                                />
+                            </FormControl>
+                            <Typography color="primary">{errors.password_confirmation?.message}</Typography>
                         </Grid>
                     </Grid>
                     <Button
