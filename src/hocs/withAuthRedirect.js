@@ -16,11 +16,11 @@ import {useRouter} from "next/router";
  * @param location The location to redirect to.
  */
 export default function withAuthRedirect({
-                                             WrappedComponent,
-                                             LoadingComponent = Loading,
-                                             expectedAuth,
-                                             location,
-                                         }) {
+    WrappedComponent,
+    LoadingComponent = Loading,
+    expectedAuth,
+    location,
+}) {
     return (props) => {
         const {user} = useAuth();
         const router = useRouter();

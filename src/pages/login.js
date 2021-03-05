@@ -1,3 +1,4 @@
+import React from "react";
 import {useAuth} from "@/lib/auth";
 import withoutAuth from "@/hocs/withoutAuth";
 import {useForm} from "react-hook-form";
@@ -13,6 +14,14 @@ import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
+import clsx from "clsx";
+import InputLabel from "@material-ui/core/InputLabel";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import IconButton from "@material-ui/core/IconButton";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import FormControl from "@material-ui/core/FormControl";
 
 const schema = yup.object().shape({
     email: yup
@@ -40,6 +49,16 @@ const useStyles = makeStyles((theme) => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
+    root: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+    withoutLabel: {
+        marginTop: theme.spacing(3),
+    },
+    textField: {
+        width: "-webkit-fill-available",
+    },
 }));
 
 const Login = () => {
@@ -47,6 +66,14 @@ const Login = () => {
     const classes = useStyles();
     const {register, handleSubmit, errors} = useForm({
         resolver: yupResolver(schema),
+    });
+
+    const [values, setValues] = React.useState({
+        amount: '',
+        password: '',
+        weight: '',
+        weightRange: '',
+        showPassword: false,
     });
 
     const onSubmit = async (data) => {
@@ -74,6 +101,18 @@ const Login = () => {
         }
     };
 
+    const handleChange = (prop) => (event) => {
+        setValues({...values, [prop]: event.target.value});
+    };
+
+    const handleClickShowPassword = () => {
+        setValues({...values, showPassword: !values.showPassword});
+    };
+
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
+
 
     return (
         <Container component="main" maxWidth="xs" className={styles.container}>
@@ -97,7 +136,8 @@ const Login = () => {
                         Iniciar Sesión
                     </Typography>
                 </Grid>
-                <form className={classes.form} noValidate onSubmit={handleSubmit(onSubmit)} style={{paddingBottom:"30px"}}>
+                <form className={classes.form} noValidate onSubmit={handleSubmit(onSubmit)}
+                      style={{paddingBottom: "30px"}}>
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -111,18 +151,44 @@ const Login = () => {
                         autoFocus
                     />
                     <Typography color="primary">{errors.email?.message}</Typography>
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Contraseña"
-                        type="password"
-                        id="password"
-                        inputRef={register}
-                        autoComplete="current-password"
-                    />
+                    {/*<TextField*/}
+                    {/*    variant="outlined"*/}
+                    {/*    margin="normal"*/}
+                    {/*    required*/}
+                    {/*    fullWidth*/}
+                    {/*    name="password"*/}
+                    {/*    label="Contraseña"*/}
+                    {/*    type="password"*/}
+                    {/*    id="password"*/}
+                    {/*    inputRef={register}*/}
+                    {/*    autoComplete="current-password"*/}
+                    {/*/>*/}
+
+
+                    <FormControl className={clsx(classes.textField)} variant="outlined">
+                        <InputLabel htmlFor="password">Contraseña *</InputLabel>
+                        <OutlinedInput
+                            id="password"
+                            name="password"
+                            inputRef={register}
+                            type={values.showPassword ? 'text' : 'password'}
+                            value={values.password}
+                            onChange={handleChange('password')}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                        edge="end"
+                                    >
+                                        {values.showPassword ? <Visibility/> : <VisibilityOff/>}
+                                    </IconButton>
+                                </InputAdornment>
+                            }
+                            labelWidth={93}
+                        />
+                    </FormControl>
                     <Typography color="primary">{errors.password?.message}</Typography>
                     <Button
                         type="submit"
