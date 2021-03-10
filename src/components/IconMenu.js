@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.up("md")]: {
             display: "none",
         },
+        marginRight: "-22px",
     },
     text: {
         fontfamily: "Raleway",
@@ -87,14 +88,17 @@ const IconsMenu = () => {
             <div className={classes.sectionDesktop}>
                 {user ? (
                     <MenuItem onClick={handleMenuAccountOpen} id="account-menu-button">
-                        <AccountCircle style={{marginRight: 5}}/> {user.name}
+                        <AccountCircle style={{marginRight: 5}}/>
+                        {user.name}
                     </MenuItem>
                 ) : (
                     <div style={{display: "flex"}}>
                         <Link href={Routes.LOGIN}>
-                            <MenuItem className={classes.text}>Iniciar sesión</MenuItem>
+                            <MenuItem className={classes.text}>Iniciar Sesión</MenuItem>
                         </Link>
-                        <Typography>{" | "}</Typography>
+                        <Typography>
+                            {" | "}
+                        </Typography>
                         <Link href={Routes.REGISTER}>
                             <MenuItem className={classes.text} style={{color: "#44857D"}}>Registrarse</MenuItem>
                         </Link>
@@ -105,8 +109,11 @@ const IconsMenu = () => {
             <div className={classes.sectionMobile}>
                 {user ? (
                     <div>
-                        <MenuItem onClick={handleMenuAccountOpen} id="account-menu-button">
-                            <AccountCircle style={{marginRight: 5}}/> {user.name}
+                        <MenuItem
+                            onClick={handleMenuAccountOpen}
+                            id="account-menu-button"
+                        >
+                            <AccountCircle/>
                         </MenuItem>
                     </div>
                 ) : (

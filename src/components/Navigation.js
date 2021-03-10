@@ -2,6 +2,7 @@ import {useState} from "react";
 import {makeStyles, useTheme} from "@material-ui/core/styles";
 import Link from "next/link";
 import AppBar from "@material-ui/core/AppBar";
+import Image from "next/image";
 import Grid from '@material-ui/core/Grid';
 import Toolbar from "@material-ui/core/Toolbar";
 import {Link as MuiLink} from "@material-ui/core";
@@ -23,31 +24,44 @@ import clsx from "clsx";
 
 import Routes from "../constants/routes";
 import IconMenu from "@/components/IconMenu";
+import Icon from '@material-ui/core/Icon';
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 const mainMenuItems = [
     {
         text: "Inicio",
         to: Routes.HOME,
+        icon: "home"
     },
     {
         text: "Libros",
         to: Routes.HOME,
+        icon: "book"
     },
     {
         text: "Mapa",
         to: Routes.HOME,
+        icon: "map"
     },
     {
         text: "Nosotros",
         to: Routes.HOME,
+        icon: "information"
     },
 ];
 const useStyles = makeStyles((theme) => ({
     appBar: {
         backgroundColor: theme.palette.quinary.main,
         color: "#fff",
-        maxHeight: 94,
+        maxHeight: 150,
+    },
+    appBarSize: {
+        [theme.breakpoints.up("xs")]: {
+            height: "87px",
+        },
+        [theme.breakpoints.up("md")]: {
+            height: "auto",
+        },
     },
     grow: {
         flexGrow: 1,
@@ -58,8 +72,8 @@ const useStyles = makeStyles((theme) => ({
     logo: {
         display: "none",
         padding: 8,
-        maxHeight: 64,
-        [theme.breakpoints.up("sm")]: {
+        maxHeight: 150,
+        [theme.breakpoints.up("xs")]: {
             display: "block",
         },
         "& a img": {
@@ -103,6 +117,9 @@ const useStyles = makeStyles((theme) => ({
         // necessary for content to be below app bar
         ...theme.mixins.toolbar,
         justifyContent: "flex-end",
+    },
+    icon: {
+        paddingRight: "30px",
     },
 }));
 
@@ -154,7 +171,12 @@ export default function MainMenu(props) {
                 {mainMenuItems.map((item, index) => (
                     <Link href={item.to} key={item.text}>
                         <ListItem button onClick={() => setOpenDrawer(false)}>
-                            <ListItemText>{item.text}</ListItemText>
+                            <Icon className={classes.icon}>
+                                {item.icon}
+                            </Icon>
+                            <ListItemText>
+                                {item.text}
+                            </ListItemText>
                         </ListItem>
                     </Link>
                 ))}
@@ -167,37 +189,61 @@ export default function MainMenu(props) {
             <HideOnScroll {...props}>
                 <AppBar position="sticky" className={classes.appBar}>
                     <Toolbar>
-                        <div className={classes.sectionMobile}>
-                            <IconButton
-                                edge="start"
-                                color="inherit"
-                                aria-label="open drawer"
-                                onClick={handleDrawerOpen}
-                                className={clsx(classes.menuButton, openDrawer && classes.hide)}
+                        <Grid container className={classes.appBarSize}>
+                            <Grid item xs={2} style={{display: "flex"}}>
+                                <div className={classes.sectionMobile}>
+                                    <IconButton
+                                        edge="start"
+                                        color="inherit"
+                                        aria-label="open drawer"
+                                        onClick={handleDrawerOpen}
+                                        className={clsx(classes.menuButton, openDrawer && classes.hide)}
+                                    >
+                                        <MenuIcon/>
+                                    </IconButton>
+                                </div>
+                            </Grid>
+                            <Grid item xs={8} style={{display: "flex", justifyContent: "center"}}>
+                                <Box className={classes.logo}>
+                                    <Image
+                                        src="/logo-book_w.png"
+                                        alt="Book-Hi"
+                                        width={180}
+                                        height={66}
+                                        color="#fff"
+                                    />
+                                </Box>
+                            </Grid>
+                            <Grid
+                                item xs={2}
+                                className={classes.drawerHeader}
                             >
-                                <MenuIcon/>
-                            </IconButton>
-                        </div>
-                        <Box className={classes.logo}>
-                        </Box>
+                                <IconMenu/>
+                            </Grid>
 
-                        <div className={classes.grow}/>
+                            <Grid item xs={12} className={classes.drawerHeader}>
+                                <div className={classes.grow}/>
+                                <div className={classes.sectionDesktop}>
+                                    {mainMenuItems.map((item) => (
+                                        <Link href={item.to} key={item.text}>
+                                            <MenuItem>
+                                                <Icon className={classes.icon}>
+                                                    {item.icon}
+                                                </Icon>
+                                                {item.text}
+                                            </MenuItem>
+                                        </Link>
+                                    ))}
+                                </div>
+                                <div className={classes.grow}/>
+                            </Grid>
 
-                        <div className={classes.sectionDesktop}>
-                            {mainMenuItems.map((item) => (
-                                <Link href={item.to} key={item.text}>
-                                    <MenuItem>{item.text}</MenuItem>
-                                </Link>
-                            ))}
-                        </div>
-                        <div className={classes.grow}/>
-
-                        <IconMenu/>
-
+                        </Grid>
                     </Toolbar>
                 </AppBar>
             </HideOnScroll>
             {renderDrawerMenu}
+
             <Toolbar/>
         </div>
     );
