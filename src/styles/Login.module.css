@@ -5,9 +5,10 @@
     left: 0;
     right: 0;
     height: auto;
-    margin: auto;
+    margin-bottom: 10em;
 
     box-shadow: 4px 4px 10px #8D99AE;
     border-radius: 5px;
     transform: rotate(-0.16deg);
+
 }
