@@ -77,6 +77,7 @@ const Register = () => {
     const [values, setValues] = React.useState({
         amount: '',
         password: '',
+        password_confirmation: '',
         weight: '',
         weightRange: '',
         showPassword: false,
