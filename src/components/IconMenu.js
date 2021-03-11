@@ -59,6 +59,10 @@ const IconsMenu = () => {
         setMobileMoreAnchorEl(event.currentTarget);
     };
 
+    const handleProfile = async () => {
+        handleMenuAccountClose();
+    };
+    
     const handleLogout = async () => {
         logout();
         handleMenuAccountClose();
@@ -77,7 +81,7 @@ const IconsMenu = () => {
             onClose={handleMenuAccountClose}
         >
             <Link href={Routes.PROFILE}>
-                <MenuItem onClick={handleLogout}>Perfil</MenuItem>
+                <MenuItem onClick={handleProfile}>Perfil</MenuItem>
             </Link>
             <MenuItem onClick={handleLogout}>Cerrar sesión</MenuItem>
         </Menu>
